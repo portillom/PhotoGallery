@@ -23,7 +23,7 @@ public class FlickrFetchr {
 
     private static final String TAG = "FlickrFetchr";
 
-    private static final String API_KEY = "yourApiKeyHere";
+    private static final String API_KEY = "898d96ed30626583b621b29a1d49f1e8";
 
     /**
      * This code creates a URL object from a string, then it calls openConnection() to create a
