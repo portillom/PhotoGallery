@@ -96,6 +96,17 @@ public class FlickrFetchr {
         return items;
     }
 
+    private String buildUrl(String method, String query){
+        Uri.Builder uriBuilder = ENDPOINT.buildUpon()
+                .appendQueryParameter("method", method);
+
+        if (method.equals(SEARCH_METHOD)) {
+            uriBuilder.appendQueryParameter("text", query);
+        }
+
+        return uriBuilder.build().toString();
+    }
+
     /**
      * This code uses convenience methods such as getJSONObject(String name) and getJSONArray(String name)
      * to navigate the JSONObject hierarchy.
