@@ -59,7 +59,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     }
 
     /**
-     * This code update mRequestMao and posts a new message to the background thread's message queue.
+     * This code update mRequestMap and posts a new message to the background thread's message queue.
      * @param target
      * @param url
      */
@@ -75,6 +75,15 @@ public class ThumbnailDownloader<T> extends HandlerThread {
         }
     }
 
+    /**
+     * This cleans all the requests out of the queue in the event of the user rotating the screen
+     * and ThumbnailDownloader may be hanging on to invalid PhotoHolders.
+     */
+    public void clearQueue() {
+        mRequestHandler.removeMessages(MESSAGE_DOWNLOAD);
+        mRequestMap.clear();
+    }
+
     private void handleRequest(final T target){
         try{
             final String url = mRequestMap.get(target);
@@ -88,7 +97,17 @@ public class ThumbnailDownloader<T> extends HandlerThread {
                     .decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             Log.i(TAG, "Bitmap created");
 
-            mRequestHandler.post(new Runnable(){
+            //This code double-checks the requestMap because RecyclerView recycles its views.
+            //By the time ThumbnailDownloader finishes downloading the Bitmap, RecyclerView may have
+            //recycled the PhotoHolder and requested a different URL for it. This check ensures that
+            //each PhotoHolder gets the correct image, even if another request has been made in the meantime.
+            //
+            //Next, mHasQuit is checked. If ThumbnailDownloader has already quit, it may be unsafe
+            //to run any callbacks.
+            //
+            //Finally, remove the PhotoHolder-URL mapping from the requestMap and set the bitmap on
+            //the target PhotoHolder
+            mResponseHandler.post(new Runnable(){
                 public void run(){
                     if (mRequestMap.get(target) != url || mHasQuit){
                         return;

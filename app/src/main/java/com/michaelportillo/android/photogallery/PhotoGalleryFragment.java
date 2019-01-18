@@ -70,6 +70,15 @@ public class PhotoGalleryFragment extends Fragment {
         return v;
     }
 
+    /**
+     * This clears out the downloader when the view is destroyed
+     */
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        mThumbnailDownloader.clearQueue();
+    }
+
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -139,12 +148,14 @@ public class PhotoGalleryFragment extends Fragment {
     private class FetchItemsTask extends AsyncTask<Void,Void,List<GalleryItem>> {
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
+            Log.i(TAG, "new FlickrFetchr().fetchItems()");
             return new FlickrFetchr().fetchItems();
         }
 
 
         @Override
         protected void onPostExecute(List<GalleryItem> items) {
+            Log.i(TAG, "onPostExecute(List<GalleryItem> items) called");
             mItems = items;
             setupAdapter();
         }
