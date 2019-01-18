@@ -148,8 +148,14 @@ public class PhotoGalleryFragment extends Fragment {
     private class FetchItemsTask extends AsyncTask<Void,Void,List<GalleryItem>> {
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
-            Log.i(TAG, "new FlickrFetchr().fetchItems()");
-            return new FlickrFetchr().fetchItems();
+
+            String query = "robot"; //Just for testing
+
+            if (query == null) {
+                return new FlickrFetchr().fetchRecentPhotos();
+            } else {
+                return new FlickrFetchr().searchPhotos(query);
+            }
         }
 
 
