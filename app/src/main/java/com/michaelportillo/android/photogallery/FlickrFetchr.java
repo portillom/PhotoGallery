@@ -78,7 +78,7 @@ public class FlickrFetchr {
     /**
      * Using a Uri.builder to build the complete URL for Flickr API request.
      */
-    public List<GalleryItem> fetchItems(){
+    private List<GalleryItem> downloadGalleryItems(String url){
 
         List<GalleryItem> items = new ArrayList<>();
 
