@@ -27,7 +27,7 @@ public class FlickrFetchr {
     private static final String FETCH_RECENTS_METHOD = "flickr.photos.getRecent";
     private static final String SEARCH_METHOD = "flickr.photos.search";
     private static final Uri ENDPOINT = Uri
-            .parse("https://api.flickr.com/services.rest/")
+            .parse("https://api.flickr.com/services/rest/")
             .buildUpon()
             .appendQueryParameter("api_key", API_KEY)
             .appendQueryParameter("format", "json")
