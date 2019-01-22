@@ -98,7 +98,7 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.fragment_photo_gallery, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
         //This provides a way to receive a callback when a query is submitted
@@ -109,6 +109,9 @@ public class PhotoGalleryFragment extends Fragment {
                 QueryPreferences.setStoredQuery(getActivity(), query);
                 updateItems();
                 closeKeyboard();
+                searchView.setQuery("", false);
+                searchView.clearFocus();
+                searchView.setIconified(true);
                 return true;
             }
 
