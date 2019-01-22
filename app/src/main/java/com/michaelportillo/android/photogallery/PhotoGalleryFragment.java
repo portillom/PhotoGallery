@@ -115,6 +115,16 @@ public class PhotoGalleryFragment extends Fragment {
                 return false;
             }
         });
+
+        //Pre-populating the search text box with the saved query when the user presses on the
+        //search icon to expand the search view.
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String query = QueryPreferences.getStoredQuery(getActivity());
+                searchView.setQuery(query, false);
+            }
+        });
     }
 
     /**
