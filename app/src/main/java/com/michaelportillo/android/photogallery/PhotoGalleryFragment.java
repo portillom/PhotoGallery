@@ -135,8 +135,9 @@ public class PhotoGalleryFragment extends Fragment {
         }
     }
 
-    private void updateItems(){
-        new FetchItemsTask().execute();
+    private void updateItems() {
+        String query = QueryPreferences.getStoredQuery(getActivity());
+        new FetchItemsTask(query).execute();
     }
 
     /**
@@ -199,15 +200,19 @@ public class PhotoGalleryFragment extends Fragment {
      * Override AsyncTask.doInBackground(...) to get data from a website and log it.
      */
     private class FetchItemsTask extends AsyncTask<Void,Void,List<GalleryItem>> {
+        private String mQuery;
+
+        public FetchItemsTask(String query){
+            mQuery = query;
+        }
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
 
-            String query = "sun"; //Just for testing
 
-            if (query == null) {
+            if (mQuery == null) {
                 return new FlickrFetchr().fetchRecentPhotos();
             } else {
-                return new FlickrFetchr().searchPhotos(query);
+                return new FlickrFetchr().searchPhotos(mQuery);
             }
         }
 
