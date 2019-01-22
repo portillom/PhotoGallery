@@ -117,6 +117,24 @@ public class PhotoGalleryFragment extends Fragment {
         });
     }
 
+    /**
+     * Clearing the stored query (set to null) whenever the user selects the Clear Search item from
+     * the overflow menu.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_clear:
+                QueryPreferences.setStoredQuery(getActivity(), null);
+                updateItems();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void updateItems(){
         new FetchItemsTask().execute();
     }
