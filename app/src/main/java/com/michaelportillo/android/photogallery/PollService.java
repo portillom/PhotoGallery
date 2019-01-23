@@ -1,13 +1,17 @@
 package com.michaelportillo.android.photogallery;
 
+import android.app.AlarmManager;
 import android.app.DownloadManager;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by USER on 1/22/19.
@@ -16,8 +20,26 @@ import java.util.List;
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
 
+    //Set interval to 1 minute
+    private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(1);
+
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
+    }
+
+    public static void setServiceAlarm(Context context, boolean isOn) {
+        Intent i = PollService.newIntent(context);
+        PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if(isOn) {
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                    SystemClock.elapsedRealtime(), POLL_INTERVAL_MS, pi);
+        } else {
+            alarmManager.cancel(pi);
+            pi.cancel();
+        }
     }
 
     public PollService() {
