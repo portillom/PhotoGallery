@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
  */
 public class QueryPreferences {
     private static final String PREF_SEARCH_QUERY = "searchQuery";
+    private static final String PREF_LAST_RESULT_ID = "LastResulted";
 
     public static String getStoredQuery(Context context){
         //Method below returns an instance with a default name and private permissions.
@@ -25,6 +26,18 @@ public class QueryPreferences {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(PREF_SEARCH_QUERY, query)
+                .apply();
+    }
+
+    public static String getPrefLastResultId(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(PREF_LAST_RESULT_ID, null);
+    }
+
+    public static void setPrefLastResultId(Context context, String lastResultedId) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(PREF_LAST_RESULT_ID, lastResultedId)
                 .apply();
     }
 }
