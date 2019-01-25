@@ -26,6 +26,9 @@ public class PollService extends IntentService {
 
     private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(15);
 
+    public static final String ACTION_SHOW_NOTIFICATION =
+            "com.michaelportillo.android.photogallery.SHOW_NOTIFCIATION";
+
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
     }
@@ -98,6 +101,8 @@ public class PollService extends IntentService {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             notificationManager.notify(0, notification);
+
+            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
         }
 
         QueryPreferences.setLastResultId(this, resultId);
