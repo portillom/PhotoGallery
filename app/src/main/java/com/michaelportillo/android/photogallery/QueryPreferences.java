@@ -42,7 +42,12 @@ public class QueryPreferences {
                 .apply();
     }
 
-    public static void setPrefIsAlarmOn(Context context, boolean isOn) {
+    public static boolean isAlarmOn(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_IS_ALARM_ON, false);
+    }
+
+    public static void setAlarmOn(Context context, boolean isOn) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_IS_ALARM_ON, isOn)
